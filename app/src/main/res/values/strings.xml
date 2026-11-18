@@ -54,4 +54,8 @@
     <string name="error_link_tidak_valid">Link tidak valid (contoh: https://contoh.com)</string>
     <string name="buku_tersimpan">Buku berhasil disimpan</string>
     <string name="buku_gagal_simpan">Gagal menyimpan buku, coba lagi</string>
+    <string name="daftar_kosong">Belum ada buku.\nKetuk Tambah Buku untuk mulai.</string>
+    <string name="gagal_muat">Gagal memuat daftar buku. Periksa koneksi internetmu.</string>
+    <string name="progres_halaman">%1$d / %2$d halaman</string>
+    <string name="rating_format">★ %1$.1f</string>
 </resources>
