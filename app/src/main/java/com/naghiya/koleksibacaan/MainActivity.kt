@@ -26,6 +26,10 @@ class MainActivity : AppCompatActivity() {
         val nama = user.displayName?.takeIf { it.isNotBlank() } ?: user.email.orEmpty()
         binding.tvHalo.text = getString(R.string.halo_pengguna, nama)
 
+        binding.btnTambahBuku.setOnClickListener {
+            startActivity(Intent(this, BookFormActivity::class.java))
+        }
+
         binding.btnKeluar.setOnClickListener {
             auth.signOut()
             keLogin()

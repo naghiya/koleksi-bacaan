@@ -45,4 +45,13 @@
         <item>@string/status_sedang_dibaca</item>
         <item>@string/status_selesai</item>
     </string-array>
+    <string name="btn_tambah_buku">Tambah Buku</string>
+    <string name="error_judul_kosong">Judul tidak boleh kosong</string>
+    <string name="error_penulis_kosong">Penulis tidak boleh kosong</string>
+    <string name="error_kategori_kosong">Kategori tidak boleh kosong</string>
+    <string name="error_halaman_kosong">Jumlah halaman harus lebih dari 0</string>
+    <string name="error_halaman_terbaca">Halaman terbaca tidak boleh melebihi jumlah halaman</string>
+    <string name="error_link_tidak_valid">Link tidak valid (contoh: https://contoh.com)</string>
+    <string name="buku_tersimpan">Buku berhasil disimpan</string>
+    <string name="buku_gagal_simpan">Gagal menyimpan buku, coba lagi</string>
 </resources>

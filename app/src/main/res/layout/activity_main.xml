@@ -17,6 +17,13 @@
         android:textStyle="bold" />
 
     <Button
+        android:id="@+id/btnTambahBuku"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="@string/btn_tambah_buku" />
+
+    <Button
         android:id="@+id/btnKeluar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
