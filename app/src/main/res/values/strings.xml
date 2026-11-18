@@ -21,4 +21,9 @@
     <string name="login_subtitle">Masuk untuk melihat koleksi bacaanmu</string>
     <string name="btn_masuk">Masuk</string>
     <string name="belum_punya_akun">Belum punya akun? Daftar</string>
+    <string name="error_login_salah">Email atau kata sandi salah</string>
+    <string name="error_password_kosong">Kata sandi tidak boleh kosong</string>
+    <string name="login_gagal">Login gagal, coba lagi</string>
+    <string name="halo_pengguna">Halo, %1$s!</string>
+    <string name="btn_keluar">Keluar</string>
 </resources>
