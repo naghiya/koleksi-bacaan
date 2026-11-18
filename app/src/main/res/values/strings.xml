@@ -26,4 +26,23 @@
     <string name="login_gagal">Login gagal, coba lagi</string>
     <string name="halo_pengguna">Halo, %1$s!</string>
     <string name="btn_keluar">Keluar</string>
+    <string name="title_tambah_buku">Tambah Buku</string>
+    <string name="hint_judul">Judul buku</string>
+    <string name="hint_penulis">Penulis</string>
+    <string name="hint_kategori">Kategori (misalnya Novel)</string>
+    <string name="hint_jumlah_halaman">Jumlah halaman</string>
+    <string name="hint_halaman_terbaca">Halaman terbaca</string>
+    <string name="hint_status">Status baca</string>
+    <string name="label_rating">Rating</string>
+    <string name="hint_link_info">Link info buku (opsional)</string>
+    <string name="btn_simpan">Simpan</string>
+
+    <string name="status_ingin_dibaca">Ingin Dibaca</string>
+    <string name="status_sedang_dibaca">Sedang Dibaca</string>
+    <string name="status_selesai">Selesai</string>
+    <string-array name="daftar_status">
+        <item>@string/status_ingin_dibaca</item>
+        <item>@string/status_sedang_dibaca</item>
+        <item>@string/status_selesai</item>
+    </string-array>
 </resources>
