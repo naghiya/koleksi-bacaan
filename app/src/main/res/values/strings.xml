@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">KoleksiBacaan</string>
+    <string name="register_title">Buat Akun</string>
+    <string name="register_subtitle">Daftar untuk mulai mengelola koleksi bacaanmu</string>
+    <string name="hint_nama">Nama lengkap</string>
+    <string name="hint_email">Email</string>
+    <string name="hint_password">Kata sandi</string>
+    <string name="hint_konfirmasi_password">Konfirmasi kata sandi</string>
+    <string name="btn_daftar">Daftar</string>
+    <string name="sudah_punya_akun">Sudah punya akun? Masuk</string>
 </resources>
