@@ -17,4 +17,8 @@
     <string name="error_email_terpakai">Email sudah terdaftar</string>
     <string name="error_jaringan">Tidak ada koneksi internet</string>
     <string name="daftar_gagal">Pendaftaran gagal, coba lagi</string>
+    <string name="login_title">Selamat Datang</string>
+    <string name="login_subtitle">Masuk untuk melihat koleksi bacaanmu</string>
+    <string name="btn_masuk">Masuk</string>
+    <string name="belum_punya_akun">Belum punya akun? Daftar</string>
 </resources>
