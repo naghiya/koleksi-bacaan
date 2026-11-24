@@ -77,4 +77,10 @@
     <string name="btn_ya_hapus">Hapus</string>
     <string name="buku_dihapus">Buku berhasil dihapus</string>
     <string name="buku_gagal_hapus">Gagal menghapus buku, coba lagi</string>
+    <string name="hint_cari">Cari judul atau penulis</string>
+    <string name="filter_semua">Semua</string>
+    <string name="tidak_ditemukan">Buku tidak ditemukan.\nCoba kata kunci atau filter lain.</string>
+    <string name="btn_lihat_info">Lihat Info Buku</string>
+    <string name="error_web_muat">Halaman tidak dapat dimuat.\nPeriksa koneksi internet atau link bukunya.</string>
+    <string name="btn_coba_lagi">Coba Lagi</string>
 </resources>

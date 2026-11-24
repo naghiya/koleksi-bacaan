@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -21,6 +22,11 @@ class MainActivity : AppCompatActivity() {
         startActivity(intent)
     }
     private var listener: ListenerRegistration? = null
+
+    // Data lengkap dari Firestore, lalu disaring sesuai kata kunci dan status
+    private var semuaBuku: List<Buku> = emptyList()
+    private var kataKunci: String = ""
+    private var filterStatus: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,6 +51,29 @@ class MainActivity : AppCompatActivity() {
         binding.btnKeluar.setOnClickListener {
             auth.signOut()
             keLogin()
+        }
+
+        binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                binding.searchView.clearFocus()
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                kataKunci = newText.orEmpty().trim()
+                terapkanFilter()
+                return true
+            }
+        })
+
+        binding.chipGroup.setOnCheckedStateChangeListener { _, ids ->
+            filterStatus = when (ids.firstOrNull()) {
+                R.id.chipIngin -> getString(R.string.status_ingin_dibaca)
+                R.id.chipSedang -> getString(R.string.status_sedang_dibaca)
+                R.id.chipSelesai -> getString(R.string.status_selesai)
+                else -> null
+            }
+            terapkanFilter()
         }
     }
 
@@ -75,13 +104,29 @@ class MainActivity : AppCompatActivity() {
                     return@addSnapshotListener
                 }
 
-                val daftar = snapshot?.toObjects(Buku::class.java).orEmpty()
+                semuaBuku = snapshot?.toObjects(Buku::class.java).orEmpty()
                     .sortedBy { it.judul.lowercase() }
-                adapter.submitList(daftar)
-
-                binding.tvKosong.text = getString(R.string.daftar_kosong)
-                binding.tvKosong.visibility = if (daftar.isEmpty()) View.VISIBLE else View.GONE
+                terapkanFilter()
             }
+    }
+
+    private fun terapkanFilter() {
+        val hasil = semuaBuku.filter { buku ->
+            val cocokStatus = filterStatus == null || buku.status == filterStatus
+            val cocokKata = kataKunci.isEmpty() ||
+                    buku.judul.contains(kataKunci, ignoreCase = true) ||
+                    buku.penulis.contains(kataKunci, ignoreCase = true)
+            cocokStatus && cocokKata
+        }
+        adapter.submitList(hasil)
+
+        if (hasil.isEmpty()) {
+            val pesan = if (semuaBuku.isEmpty()) R.string.daftar_kosong else R.string.tidak_ditemukan
+            binding.tvKosong.text = getString(pesan)
+            binding.tvKosong.visibility = View.VISIBLE
+        } else {
+            binding.tvKosong.visibility = View.GONE
+        }
     }
 
     private fun keLogin() {

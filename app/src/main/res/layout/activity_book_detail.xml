@@ -92,10 +92,17 @@
             android:layout_height="wrap_content" />
 
         <Button
-            android:id="@+id/btnEdit"
+            android:id="@+id/btnInfo"
             android:layout_width="match_parent"
             android:layout_height="56dp"
             android:layout_marginTop="32dp"
+            android:text="@string/btn_lihat_info" />
+
+        <Button
+            android:id="@+id/btnEdit"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_marginTop="12dp"
             android:text="@string/btn_edit" />
 
         <Button

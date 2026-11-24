@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".WebViewActivity">
+
+    <WebView
+        android:id="@+id/webView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:id="@+id/layoutError"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="?android:attr/colorBackground"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="24dp"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/error_web_muat" />
+
+        <Button
+            android:id="@+id/btnCobaLagi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/btn_coba_lagi" />
+    </LinearLayout>
+</FrameLayout>

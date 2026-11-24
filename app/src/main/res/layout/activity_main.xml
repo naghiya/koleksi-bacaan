@@ -38,6 +38,59 @@
                 android:text="@string/btn_keluar" />
         </LinearLayout>
 
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/searchView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="8dp"
+            app:iconifiedByDefault="false"
+            app:queryHint="@string/hint_cari" />
+
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="16dp"
+            android:scrollbars="none">
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/chipGroup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:selectionRequired="true"
+                app:singleLine="true"
+                app:singleSelection="true">
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipSemua"
+                    style="@style/Widget.Material3.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:text="@string/filter_semua" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipIngin"
+                    style="@style/Widget.Material3.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/status_ingin_dibaca" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipSedang"
+                    style="@style/Widget.Material3.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/status_sedang_dibaca" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipSelesai"
+                    style="@style/Widget.Material3.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/status_selesai" />
+            </com.google.android.material.chip.ChipGroup>
+        </HorizontalScrollView>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvBuku"
             android:layout_width="match_parent"

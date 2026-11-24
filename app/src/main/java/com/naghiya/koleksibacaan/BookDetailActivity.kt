@@ -16,6 +16,8 @@ class BookDetailActivity : AppCompatActivity() {
     private var listener: ListenerRegistration? = null
     private var bookId: String = ""
 
+    private var linkInfo: String = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityBookDetailBinding.inflate(layoutInflater)
@@ -26,6 +28,16 @@ class BookDetailActivity : AppCompatActivity() {
             Toast.makeText(this, R.string.buku_tidak_ditemukan, Toast.LENGTH_SHORT).show()
             finish()
             return
+        }
+
+        binding.btnInfo.setOnClickListener {
+            if (linkInfo.isBlank()) {
+                Toast.makeText(this, R.string.link_kosong, Toast.LENGTH_SHORT).show()
+            } else {
+                val intent = Intent(this, WebViewActivity::class.java)
+                intent.putExtra(WebViewActivity.EXTRA_URL, linkInfo)
+                startActivity(intent)
+            }
         }
 
         binding.btnEdit.setOnClickListener {
@@ -87,6 +99,7 @@ class BookDetailActivity : AppCompatActivity() {
     }
 
     private fun tampilkan(buku: Buku) {
+        linkInfo = buku.linkInfo
         binding.tvJudul.text = buku.judul
         binding.tvPenulis.text = buku.penulis
         binding.tvKategori.text = buku.kategori
