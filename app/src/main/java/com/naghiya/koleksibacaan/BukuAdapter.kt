@@ -7,7 +7,9 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.naghiya.koleksibacaan.databinding.ItemBukuBinding
 
-class BukuAdapter : ListAdapter<Buku, BukuAdapter.ViewHolder>(DIFF) {
+class BukuAdapter(
+    private val onItemClick: (Buku) -> Unit
+) : ListAdapter<Buku, BukuAdapter.ViewHolder>(DIFF) {
 
     class ViewHolder(val binding: ItemBukuBinding) : RecyclerView.ViewHolder(binding.root)
 
@@ -19,6 +21,7 @@ class BukuAdapter : ListAdapter<Buku, BukuAdapter.ViewHolder>(DIFF) {
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val buku = getItem(position)
         val context = holder.itemView.context
+        holder.itemView.setOnClickListener { onItemClick(buku) }
         with(holder.binding) {
             tvJudul.text = buku.judul
             tvPenulis.text = buku.penulis

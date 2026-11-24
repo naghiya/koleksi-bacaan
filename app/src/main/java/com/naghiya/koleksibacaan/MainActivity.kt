@@ -15,7 +15,11 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private val auth = FirebaseAuth.getInstance()
     private val db = FirebaseFirestore.getInstance()
-    private val adapter = BukuAdapter()
+    private val adapter = BukuAdapter { buku ->
+        val intent = Intent(this, BookDetailActivity::class.java)
+        intent.putExtra(BookDetailActivity.EXTRA_BOOK_ID, buku.id)
+        startActivity(intent)
+    }
     private var listener: ListenerRegistration? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {

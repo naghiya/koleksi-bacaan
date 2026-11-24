@@ -59,4 +59,15 @@
     <string name="progres_halaman">%1$d / %2$d halaman</string>
     <string name="rating_format">★ %1$.1f</string>
     <string name="desc_tambah_buku">Tambah buku</string>
+    <string name="label_penulis">Penulis</string>
+    <string name="label_kategori">Kategori</string>
+    <string name="label_progres">Progres baca</string>
+    <string name="label_status">Status</string>
+    <string name="label_link_info">Link info buku</string>
+    <string name="link_kosong">Tidak ada link</string>
+    <string name="buku_tidak_ditemukan">Buku tidak ditemukan</string>
+    <string name="btn_edit">Edit Buku</string>
+    <string name="btn_simpan_perubahan">Simpan Perubahan</string>
+    <string name="buku_diperbarui">Buku berhasil diperbarui</string>
+    <string name="buku_gagal_perbarui">Gagal memperbarui buku, coba lagi</string>
 </resources>

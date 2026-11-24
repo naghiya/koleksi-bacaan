@@ -16,19 +16,56 @@ class BookFormActivity : AppCompatActivity() {
     private val db = FirebaseFirestore.getInstance()
     private val auth = FirebaseAuth.getInstance()
 
+    // Kosong = mode tambah, terisi = mode edit
+    private var bookId: String = ""
+    private val modeEdit get() = bookId.isNotEmpty()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityBookFormBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Isi pilihan status, defaultnya "Ingin Dibaca"
+        bookId = intent.getStringExtra(BookDetailActivity.EXTRA_BOOK_ID).orEmpty()
+
         val daftarStatus = resources.getStringArray(R.array.daftar_status)
         binding.actStatus.setAdapter(
             ArrayAdapter(this, android.R.layout.simple_list_item_1, daftarStatus)
         )
         binding.actStatus.setText(daftarStatus[0], false)
 
+        if (modeEdit) {
+            binding.btnSimpan.setText(R.string.btn_simpan_perubahan)
+            muatDataLama()
+        }
+
         binding.btnSimpan.setOnClickListener { simpan() }
+    }
+
+    private fun muatDataLama() {
+        tampilkanLoading(true)
+        db.collection("books").document(bookId).get()
+            .addOnSuccessListener { dokumen ->
+                tampilkanLoading(false)
+                val buku = dokumen.toObject(Buku::class.java)
+                if (buku == null) {
+                    Toast.makeText(this, R.string.buku_tidak_ditemukan, Toast.LENGTH_SHORT).show()
+                    finish()
+                    return@addOnSuccessListener
+                }
+                binding.etJudul.setText(buku.judul)
+                binding.etPenulis.setText(buku.penulis)
+                binding.etKategori.setText(buku.kategori)
+                binding.etJumlahHalaman.setText(buku.jumlahHalaman.toString())
+                binding.etHalamanTerbaca.setText(buku.halamanTerbaca.toString())
+                binding.actStatus.setText(buku.status, false)
+                binding.ratingBar.rating = buku.rating
+                binding.etLinkInfo.setText(buku.linkInfo)
+            }
+            .addOnFailureListener {
+                tampilkanLoading(false)
+                Toast.makeText(this, R.string.gagal_muat, Toast.LENGTH_LONG).show()
+                finish()
+            }
     }
 
     private fun simpan() {
@@ -58,16 +95,23 @@ class BookFormActivity : AppCompatActivity() {
         )
 
         tampilkanLoading(true)
-        db.collection("books")
-            .add(buku)
+        val tugas = if (modeEdit) {
+            db.collection("books").document(bookId).set(buku)
+        } else {
+            db.collection("books").add(buku)
+        }
+
+        tugas
             .addOnSuccessListener {
                 tampilkanLoading(false)
-                Toast.makeText(this, R.string.buku_tersimpan, Toast.LENGTH_SHORT).show()
+                val pesan = if (modeEdit) R.string.buku_diperbarui else R.string.buku_tersimpan
+                Toast.makeText(this, pesan, Toast.LENGTH_SHORT).show()
                 finish()
             }
             .addOnFailureListener {
                 tampilkanLoading(false)
-                Toast.makeText(this, R.string.buku_gagal_simpan, Toast.LENGTH_LONG).show()
+                val pesan = if (modeEdit) R.string.buku_gagal_perbarui else R.string.buku_gagal_simpan
+                Toast.makeText(this, pesan, Toast.LENGTH_LONG).show()
             }
     }
 
