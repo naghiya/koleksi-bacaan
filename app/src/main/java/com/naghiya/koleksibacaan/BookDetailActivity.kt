@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
 import com.naghiya.koleksibacaan.databinding.ActivityBookDetailBinding
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class BookDetailActivity : AppCompatActivity() {
 
@@ -32,6 +33,8 @@ class BookDetailActivity : AppCompatActivity() {
             intent.putExtra(EXTRA_BOOK_ID, bookId)
             startActivity(intent)
         }
+
+        binding.btnHapus.setOnClickListener { konfirmasiHapus() }
     }
 
     override fun onStart() {
@@ -58,6 +61,29 @@ class BookDetailActivity : AppCompatActivity() {
         super.onStop()
         listener?.remove()
         listener = null
+    }
+
+    private fun konfirmasiHapus() {
+        val judul = binding.tvJudul.text.toString()
+        MaterialAlertDialogBuilder(this)
+            .setTitle(R.string.dialog_hapus_judul)
+            .setMessage(getString(R.string.dialog_hapus_pesan, judul))
+            .setNegativeButton(R.string.btn_batal, null)
+            .setPositiveButton(R.string.btn_ya_hapus) { _, _ -> hapusBuku() }
+            .show()
+    }
+
+    private fun hapusBuku() {
+        binding.btnHapus.isEnabled = false
+        db.collection("books").document(bookId).delete()
+            .addOnSuccessListener {
+                Toast.makeText(this, R.string.buku_dihapus, Toast.LENGTH_SHORT).show()
+                finish()
+            }
+            .addOnFailureListener {
+                binding.btnHapus.isEnabled = true
+                Toast.makeText(this, R.string.buku_gagal_hapus, Toast.LENGTH_LONG).show()
+            }
     }
 
     private fun tampilkan(buku: Buku) {

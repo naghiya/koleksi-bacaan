@@ -70,4 +70,11 @@
     <string name="btn_simpan_perubahan">Simpan Perubahan</string>
     <string name="buku_diperbarui">Buku berhasil diperbarui</string>
     <string name="buku_gagal_perbarui">Gagal memperbarui buku, coba lagi</string>
+    <string name="btn_hapus">Hapus Buku</string>
+    <string name="dialog_hapus_judul">Hapus buku?</string>
+    <string name="dialog_hapus_pesan">Buku \"%1$s\" akan dihapus permanen dan tidak bisa dikembalikan.</string>
+    <string name="btn_batal">Batal</string>
+    <string name="btn_ya_hapus">Hapus</string>
+    <string name="buku_dihapus">Buku berhasil dihapus</string>
+    <string name="buku_gagal_hapus">Gagal menghapus buku, coba lagi</string>
 </resources>
