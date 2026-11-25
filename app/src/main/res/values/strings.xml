@@ -102,4 +102,14 @@
     <string name="stat_sedang">Dibaca</string>
     <string name="stat_selesai">Selesai</string>
     <string name="desc_foto_profil">Foto profil</string>
+    <string name="btn_ubah_foto">Ubah Foto</string>
+    <string name="section_data_mahasiswa">Data Mahasiswa</string>
+    <string name="label_nim">NIM</string>
+    <string name="nim_value">240170216</string>
+    <string name="label_prodi">Program Studi</string>
+    <string name="prodi_value">Teknik Informatika</string>
+    <string name="label_matkul">Mata Kuliah</string>
+    <string name="matkul_value">Pemrograman Mobile</string>
+    <string name="section_tentang">Tentang Aplikasi</string>
+    <string name="deskripsi_aplikasi">Aplikasi Manajemen Koleksi Bacaan dan Informasi Buku Terintegrasi. Dibuat untuk memenuhi tugas Ujian Akhir Semester (UAS) mata kuliah Pemrograman Mobile.</string>
 </resources>

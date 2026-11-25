@@ -70,6 +70,14 @@ class MainActivity : AppCompatActivity() {
             )
         }
 
+        val bukaGaleri = {
+            pilihFoto.launch(
+                PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+            )
+        }
+        binding.cardAkunFoto.setOnClickListener { bukaGaleri() }
+        binding.btnUbahFoto.setOnClickListener { bukaGaleri() }
+
         binding.fabTambah.setOnClickListener {
             startActivity(Intent(this, BookFormActivity::class.java))
         }
@@ -141,10 +149,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun tampilkanFotoProfil(bitmap: Bitmap) {
-        binding.ivProfil.imageTintList = null
-        binding.ivProfil.setPadding(0, 0, 0, 0)
-        binding.ivProfil.scaleType = ImageView.ScaleType.CENTER_CROP
-        binding.ivProfil.setImageBitmap(bitmap)
+        for (iv in listOf(binding.ivProfil, binding.ivAkunFoto)) {
+            iv.imageTintList = null
+            iv.setPadding(0, 0, 0, 0)
+            iv.scaleType = ImageView.ScaleType.CENTER_CROP
+            iv.setImageBitmap(bitmap)
+        }
     }
 
     private fun simpanFotoProfil(uri: Uri) {
