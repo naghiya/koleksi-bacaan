@@ -1,8 +1,16 @@
 package com.naghiya.koleksibacaan
 
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.net.Uri
 import android.os.Bundle
+import android.util.Base64
 import android.view.View
+import android.widget.ImageView
+import android.widget.Toast
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -10,6 +18,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
 import com.naghiya.koleksibacaan.databinding.ActivityMainBinding
+import java.io.ByteArrayOutputStream
 
 class MainActivity : AppCompatActivity() {
 
@@ -26,6 +35,14 @@ class MainActivity : AppCompatActivity() {
     private var semuaBuku: List<Buku> = emptyList()
     private var kataKunci: String = ""
     private var filterStatus: String? = null
+
+    private val prefs by lazy { getSharedPreferences("profil", MODE_PRIVATE) }
+    private fun kunciFoto() = "foto_" + (auth.currentUser?.uid ?: "")
+
+    private val pilihFoto =
+        registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
+            if (uri != null) simpanFotoProfil(uri)
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,6 +62,13 @@ class MainActivity : AppCompatActivity() {
 
         binding.rvBuku.layoutManager = LinearLayoutManager(this)
         binding.rvBuku.adapter = adapter
+
+        muatFotoProfil()
+        binding.cardProfil.setOnClickListener {
+            pilihFoto.launch(
+                PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+            )
+        }
 
         binding.fabTambah.setOnClickListener {
             startActivity(Intent(this, BookFormActivity::class.java))
@@ -108,6 +132,53 @@ class MainActivity : AppCompatActivity() {
         binding.layoutAkun.visibility = if (akun) View.VISIBLE else View.GONE
     }
 
+    // ---------- Foto profil (disimpan lokal di HP) ----------
+
+    private fun muatFotoProfil() {
+        val base64 = prefs.getString(kunciFoto(), null) ?: return
+        val bytes = Base64.decode(base64, Base64.DEFAULT)
+        BitmapFactory.decodeByteArray(bytes, 0, bytes.size)?.let { tampilkanFotoProfil(it) }
+    }
+
+    private fun tampilkanFotoProfil(bitmap: Bitmap) {
+        binding.ivProfil.imageTintList = null
+        binding.ivProfil.setPadding(0, 0, 0, 0)
+        binding.ivProfil.scaleType = ImageView.ScaleType.CENTER_CROP
+        binding.ivProfil.setImageBitmap(bitmap)
+    }
+
+    private fun simpanFotoProfil(uri: Uri) {
+        try {
+            val batas = BitmapFactory.Options().apply { inJustDecodeBounds = true }
+            contentResolver.openInputStream(uri)?.use { BitmapFactory.decodeStream(it, null, batas) }
+            var sampel = 1
+            while (batas.outWidth / sampel > 1000 || batas.outHeight / sampel > 1000) sampel *= 2
+
+            val opsi = BitmapFactory.Options().apply { inSampleSize = sampel }
+            val asli = contentResolver.openInputStream(uri)?.use {
+                BitmapFactory.decodeStream(it, null, opsi)
+            } ?: throw IllegalStateException("Gambar tidak terbaca")
+
+            val skala = 300f / maxOf(asli.width, asli.height)
+            val kecil = if (skala < 1f) {
+                Bitmap.createScaledBitmap(
+                    asli, (asli.width * skala).toInt(), (asli.height * skala).toInt(), true
+                )
+            } else asli
+
+            val keluaran = ByteArrayOutputStream()
+            kecil.compress(Bitmap.CompressFormat.JPEG, 80, keluaran)
+            val base64 = Base64.encodeToString(keluaran.toByteArray(), Base64.NO_WRAP)
+
+            prefs.edit().putString(kunciFoto(), base64).apply()
+            tampilkanFotoProfil(kecil)
+        } catch (e: Exception) {
+            Toast.makeText(this, R.string.cover_gagal, Toast.LENGTH_LONG).show()
+        }
+    }
+
+    // ---------- Data buku ----------
+
     private fun muatBuku() {
         val uid = auth.currentUser?.uid ?: return
         binding.progressBar.visibility = View.VISIBLE
@@ -126,8 +197,17 @@ class MainActivity : AppCompatActivity() {
 
                 semuaBuku = snapshot?.toObjects(Buku::class.java).orEmpty()
                     .sortedBy { it.judul.lowercase() }
+                perbaruiStatistik()
                 terapkanFilter()
             }
+    }
+
+    private fun perbaruiStatistik() {
+        val sedang = getString(R.string.status_sedang_dibaca)
+        val selesai = getString(R.string.status_selesai)
+        binding.tvStatTotal.text = semuaBuku.size.toString()
+        binding.tvStatSedang.text = semuaBuku.count { it.status == sedang }.toString()
+        binding.tvStatSelesai.text = semuaBuku.count { it.status == selesai }.toString()
     }
 
     private fun terapkanFilter() {
