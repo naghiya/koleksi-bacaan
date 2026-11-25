@@ -112,4 +112,10 @@
     <string name="matkul_value">Pemrograman Mobile</string>
     <string name="section_tentang">Tentang Aplikasi</string>
     <string name="deskripsi_aplikasi">Aplikasi Manajemen Koleksi Bacaan dan Informasi Buku Terintegrasi. Dibuat untuk memenuhi tugas Ujian Akhir Semester (UAS) mata kuliah Pemrograman Mobile.</string>
+    <string name="lupa_password">Lupa kata sandi?</string>
+    <string name="dialog_reset_judul">Reset kata sandi</string>
+    <string name="dialog_reset_pesan">Masukkan email akunmu. Kami akan mengirim link untuk membuat kata sandi baru.</string>
+    <string name="btn_kirim_link">Kirim Link</string>
+    <string name="reset_terkirim">Jika email terdaftar, link reset sudah dikirim. Cek juga folder Spam.</string>
+    <string name="reset_gagal">Gagal mengirim link, coba lagi</string>
 </resources>

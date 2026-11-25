@@ -121,6 +121,17 @@
                         android:inputType="textPassword" />
                 </com.google.android.material.textfield.TextInputLayout>
 
+                <TextView
+                    android:id="@+id/tvLupa"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginTop="8dp"
+                    android:padding="6dp"
+                    android:text="@string/lupa_password"
+                    android:textColor="@color/kb_accent"
+                    android:textStyle="bold" />
+
                 <Button
                     android:id="@+id/btnMasuk"
                     android:layout_width="match_parent"
