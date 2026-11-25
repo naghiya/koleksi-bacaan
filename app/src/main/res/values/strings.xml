@@ -87,4 +87,13 @@
     <string name="nav_akun">Akun</string>
     <string name="label_nama">Nama</string>
     <string name="label_email">Email</string>
+    <string name="label_cover">Cover buku (opsional)</string>
+    <string name="btn_pilih_cover">Pilih Cover</string>
+    <string name="btn_ganti_cover">Ganti Cover</string>
+    <string name="cover_gagal">Gagal memuat gambar, coba foto lain</string>
+    <string name="title_edit_buku">Edit Buku</string>
+    <string name="form_subtitle">Lengkapi data bukumu</string>
+    <string name="section_info">Informasi Buku</string>
+    <string name="section_progres">Progres Baca</string>
+    <string name="section_penilaian">Penilaian dan Info</string>
 </resources>

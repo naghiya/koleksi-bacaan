@@ -12,5 +12,6 @@ data class Buku(
     val halamanTerbaca: Int = 0,
     val status: String = "",
     val rating: Float = 0f,
-    val linkInfo: String = ""
+    val linkInfo: String = "",
+    val coverBase64: String = ""
 )

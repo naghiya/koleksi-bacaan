@@ -8,6 +8,9 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
 import com.naghiya.koleksibacaan.databinding.ActivityBookDetailBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import android.graphics.BitmapFactory
+import android.util.Base64
+import android.widget.ImageView
 
 class BookDetailActivity : AppCompatActivity() {
 
@@ -98,6 +101,15 @@ class BookDetailActivity : AppCompatActivity() {
             }
     }
 
+    private fun tampilkanCover(base64: String) {
+        if (base64.isEmpty()) return
+        val bytes = Base64.decode(base64, Base64.DEFAULT)
+        val bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size) ?: return
+        binding.ivCover.imageTintList = null
+        binding.ivCover.setPadding(0, 0, 0, 0)
+        binding.ivCover.scaleType = ImageView.ScaleType.CENTER_CROP
+        binding.ivCover.setImageBitmap(bitmap)
+    }
     private fun tampilkan(buku: Buku) {
         linkInfo = buku.linkInfo
         binding.tvJudul.text = buku.judul
@@ -112,6 +124,7 @@ class BookDetailActivity : AppCompatActivity() {
 
         val persen = if (buku.jumlahHalaman > 0) buku.halamanTerbaca * 100 / buku.jumlahHalaman else 0
         binding.progressBaca.setProgressCompat(persen, true)
+        tampilkanCover(buku.coverBase64)
     }
 
     companion object {

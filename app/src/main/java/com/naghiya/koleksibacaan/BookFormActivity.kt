@@ -1,14 +1,22 @@
 package com.naghiya.koleksibacaan
 
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.net.Uri
 import android.os.Bundle
+import android.util.Base64
 import android.util.Patterns
 import android.view.View
 import android.widget.ArrayAdapter
+import android.widget.ImageView
 import android.widget.Toast
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.naghiya.koleksibacaan.databinding.ActivityBookFormBinding
+import java.io.ByteArrayOutputStream
 
 class BookFormActivity : AppCompatActivity() {
 
@@ -20,6 +28,14 @@ class BookFormActivity : AppCompatActivity() {
     private var bookId: String = ""
     private val modeEdit get() = bookId.isNotEmpty()
 
+    // Cover disimpan sebagai teks Base64 (gambar yang sudah dikecilkan)
+    private var coverBase64: String = ""
+
+    private val pilihGambar =
+        registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
+            if (uri != null) prosesGambar(uri)
+        }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityBookFormBinding.inflate(layoutInflater)
@@ -27,11 +43,19 @@ class BookFormActivity : AppCompatActivity() {
 
         bookId = intent.getStringExtra(BookDetailActivity.EXTRA_BOOK_ID).orEmpty()
 
+        binding.tvJudulForm.setText(if (modeEdit) R.string.title_edit_buku else R.string.title_tambah_buku)
+
         val daftarStatus = resources.getStringArray(R.array.daftar_status)
         binding.actStatus.setAdapter(
             ArrayAdapter(this, android.R.layout.simple_list_item_1, daftarStatus)
         )
         binding.actStatus.setText(daftarStatus[0], false)
+
+        binding.btnPilihCover.setOnClickListener {
+            pilihGambar.launch(
+                PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+            )
+        }
 
         if (modeEdit) {
             binding.btnSimpan.setText(R.string.btn_simpan_perubahan)
@@ -39,6 +63,46 @@ class BookFormActivity : AppCompatActivity() {
         }
 
         binding.btnSimpan.setOnClickListener { simpan() }
+    }
+
+    private fun prosesGambar(uri: Uri) {
+        try {
+            // 1. Baca ukuran gambar dulu, lalu kecilkan saat membuka supaya hemat memori
+            val batas = BitmapFactory.Options().apply { inJustDecodeBounds = true }
+            contentResolver.openInputStream(uri)?.use { BitmapFactory.decodeStream(it, null, batas) }
+            var sampel = 1
+            while (batas.outWidth / sampel > 1200 || batas.outHeight / sampel > 1200) sampel *= 2
+
+            val opsi = BitmapFactory.Options().apply { inSampleSize = sampel }
+            val asli = contentResolver.openInputStream(uri)?.use {
+                BitmapFactory.decodeStream(it, null, opsi)
+            } ?: throw IllegalStateException("Gambar tidak terbaca")
+
+            // 2. Perkecil sisi terpanjang menjadi maksimal 600 piksel
+            val skala = 600f / maxOf(asli.width, asli.height)
+            val kecil = if (skala < 1f) {
+                Bitmap.createScaledBitmap(
+                    asli, (asli.width * skala).toInt(), (asli.height * skala).toInt(), true
+                )
+            } else asli
+
+            // 3. Kompres ke JPEG lalu ubah jadi teks Base64
+            val keluaran = ByteArrayOutputStream()
+            kecil.compress(Bitmap.CompressFormat.JPEG, 75, keluaran)
+            coverBase64 = Base64.encodeToString(keluaran.toByteArray(), Base64.NO_WRAP)
+
+            tampilkanCover(kecil)
+        } catch (e: Exception) {
+            Toast.makeText(this, R.string.cover_gagal, Toast.LENGTH_LONG).show()
+        }
+    }
+
+    private fun tampilkanCover(bitmap: Bitmap) {
+        binding.ivCover.imageTintList = null
+        binding.ivCover.setPadding(0, 0, 0, 0)
+        binding.ivCover.scaleType = ImageView.ScaleType.CENTER_CROP
+        binding.ivCover.setImageBitmap(bitmap)
+        binding.btnPilihCover.setText(R.string.btn_ganti_cover)
     }
 
     private fun muatDataLama() {
@@ -60,6 +124,12 @@ class BookFormActivity : AppCompatActivity() {
                 binding.actStatus.setText(buku.status, false)
                 binding.ratingBar.rating = buku.rating
                 binding.etLinkInfo.setText(buku.linkInfo)
+
+                if (buku.coverBase64.isNotEmpty()) {
+                    coverBase64 = buku.coverBase64
+                    val bytes = Base64.decode(buku.coverBase64, Base64.DEFAULT)
+                    BitmapFactory.decodeByteArray(bytes, 0, bytes.size)?.let { tampilkanCover(it) }
+                }
             }
             .addOnFailureListener {
                 tampilkanLoading(false)
@@ -91,7 +161,8 @@ class BookFormActivity : AppCompatActivity() {
             halamanTerbaca = halamanTerbaca,
             status = status,
             rating = rating,
-            linkInfo = linkInfo
+            linkInfo = linkInfo,
+            coverBase64 = coverBase64
         )
 
         tampilkanLoading(true)
