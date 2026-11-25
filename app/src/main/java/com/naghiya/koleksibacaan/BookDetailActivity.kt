@@ -109,6 +109,9 @@ class BookDetailActivity : AppCompatActivity() {
             getString(R.string.progres_halaman, buku.halamanTerbaca, buku.jumlahHalaman)
         binding.tvLinkInfo.text =
             buku.linkInfo.ifEmpty { getString(R.string.link_kosong) }
+
+        val persen = if (buku.jumlahHalaman > 0) buku.halamanTerbaca * 100 / buku.jumlahHalaman else 0
+        binding.progressBaca.setProgressCompat(persen, true)
     }
 
     companion object {
