@@ -23,7 +23,6 @@ class MainActivity : AppCompatActivity() {
     }
     private var listener: ListenerRegistration? = null
 
-    // Data lengkap dari Firestore, lalu disaring sesuai kata kunci dan status
     private var semuaBuku: List<Buku> = emptyList()
     private var kataKunci: String = ""
     private var filterStatus: String? = null
@@ -41,6 +40,8 @@ class MainActivity : AppCompatActivity() {
 
         val nama = user.displayName?.takeIf { it.isNotBlank() } ?: user.email.orEmpty()
         binding.tvHalo.text = getString(R.string.halo_pengguna, nama)
+        binding.tvAkunNama.text = nama
+        binding.tvAkunEmail.text = user.email.orEmpty()
 
         binding.rvBuku.layoutManager = LinearLayoutManager(this)
         binding.rvBuku.adapter = adapter
@@ -51,6 +52,20 @@ class MainActivity : AppCompatActivity() {
         binding.btnKeluar.setOnClickListener {
             auth.signOut()
             keLogin()
+        }
+
+        binding.bottomNav.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.nav_koleksi -> {
+                    tampilkanHalaman(akun = false)
+                    true
+                }
+                R.id.nav_akun -> {
+                    tampilkanHalaman(akun = true)
+                    true
+                }
+                else -> false
+            }
         }
 
         binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
@@ -86,6 +101,11 @@ class MainActivity : AppCompatActivity() {
         super.onStop()
         listener?.remove()
         listener = null
+    }
+
+    private fun tampilkanHalaman(akun: Boolean) {
+        binding.layoutDaftar.visibility = if (akun) View.GONE else View.VISIBLE
+        binding.layoutAkun.visibility = if (akun) View.VISIBLE else View.GONE
     }
 
     private fun muatBuku() {

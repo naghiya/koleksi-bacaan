@@ -83,4 +83,8 @@
     <string name="btn_lihat_info">Lihat Info Buku</string>
     <string name="error_web_muat">Halaman tidak dapat dimuat.\nPeriksa koneksi internet atau link bukunya.</string>
     <string name="btn_coba_lagi">Coba Lagi</string>
+    <string name="nav_koleksi">Koleksi</string>
+    <string name="nav_akun">Akun</string>
+    <string name="label_nama">Nama</string>
+    <string name="label_email">Email</string>
 </resources>
