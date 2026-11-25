@@ -1,6 +1,18 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Base.Theme.KoleksiBacaan" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/kb_primary</item>
+        <item name="colorOnPrimary">@color/kb_on_primary</item>
+        <item name="colorPrimaryContainer">@color/kb_primary_container</item>
+        <item name="colorOnPrimaryContainer">@color/kb_on_primary_container</item>
+        <item name="colorSecondaryContainer">@color/kb_primary_container</item>
+        <item name="colorOnSecondaryContainer">@color/kb_on_primary_container</item>
+        <item name="android:colorBackground">@color/kb_background</item>
+        <item name="colorSurface">@color/kb_surface</item>
+        <item name="colorOnSurface">@color/kb_on_surface</item>
+        <item name="colorOutline">@color/kb_outline</item>
+        <item name="android:statusBarColor">@color/kb_background</item>
+        <item name="android:windowLightStatusBar">true</item>
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
     </style>

@@ -2,4 +2,15 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="kb_primary">#7A1F3D</color>
+    <color name="kb_on_primary">#FFFFFF</color>
+    <color name="kb_primary_container">#F8D7E0</color>
+    <color name="kb_on_primary_container">#3B0A1B</color>
+    <color name="kb_background">#FFF6EF</color>
+    <color name="kb_surface">#FFFBF8</color>
+    <color name="kb_on_surface">#2B1A1E</color>
+    <color name="kb_outline">#D9B8C0</color>
+    <color name="kb_card">#FFEFF3</color>
+    <color name="kb_accent">#B5446E</color>
+    <color name="kb_nav">#FBE3EA</color>
 </resources>
