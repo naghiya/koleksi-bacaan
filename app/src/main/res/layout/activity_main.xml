@@ -367,6 +367,15 @@
                         android:gravity="center"
                         android:textColor="@color/kb_primary_container"
                         android:textStyle="italic" />
+
+                    <Button
+                        android:id="@+id/btnUbahNama"
+                        style="@style/Widget.Material3.Button.TextButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:text="@string/btn_ubah_nama"
+                        android:textColor="@color/kb_primary_container" />
                 </LinearLayout>
 
                 <!-- Kartu Data Mahasiswa -->

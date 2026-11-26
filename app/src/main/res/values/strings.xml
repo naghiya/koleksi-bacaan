@@ -118,4 +118,8 @@
     <string name="btn_kirim_link">Kirim Link</string>
     <string name="reset_terkirim">Jika email terdaftar, link reset sudah dikirim. Cek juga folder Spam.</string>
     <string name="reset_gagal">Gagal mengirim link, coba lagi</string>
+    <string name="btn_ubah_nama">Ubah Nama</string>
+    <string name="dialog_nama_judul">Ubah nama</string>
+    <string name="nama_diperbarui">Nama berhasil diperbarui</string>
+    <string name="nama_gagal">Gagal mengubah nama, coba lagi</string>
 </resources>

@@ -19,6 +19,12 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
 import com.naghiya.koleksibacaan.databinding.ActivityMainBinding
 import java.io.ByteArrayOutputStream
+import androidx.appcompat.app.AlertDialog
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.userProfileChangeRequest
 
 class MainActivity : AppCompatActivity() {
 
@@ -70,6 +76,7 @@ class MainActivity : AppCompatActivity() {
             )
         }
 
+        binding.btnUbahNama.setOnClickListener { tampilkanDialogUbahNama() }
         val bukaGaleri = {
             pilihFoto.launch(
                 PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
@@ -239,6 +246,55 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    // ---------- Ubah nama ----------
+
+    private fun tampilkanDialogUbahNama() {
+        val user = auth.currentUser ?: return
+        val tampilan = layoutInflater.inflate(R.layout.dialog_ubah_nama, null)
+        val til = tampilan.findViewById<TextInputLayout>(R.id.tilNamaBaru)
+        val et = tampilan.findViewById<TextInputEditText>(R.id.etNamaBaru)
+        et.setText(user.displayName.orEmpty())
+        et.setSelection(et.text?.length ?: 0)
+
+        val dialog = MaterialAlertDialogBuilder(this)
+            .setTitle(R.string.dialog_nama_judul)
+            .setView(tampilan)
+            .setNegativeButton(R.string.btn_batal, null)
+            .setPositiveButton(R.string.btn_simpan, null)
+            .create()
+
+        // Tombol Simpan diatur manual supaya dialog tidak menutup kalau nama kosong
+        dialog.setOnShowListener {
+            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
+                val namaBaru = et.text.toString().trim()
+                til.error = null
+                if (namaBaru.isEmpty()) {
+                    til.error = getString(R.string.error_nama_kosong)
+                } else {
+                    simpanNama(user, namaBaru, dialog)
+                }
+            }
+        }
+        dialog.show()
+    }
+
+    private fun simpanNama(user: FirebaseUser, namaBaru: String, dialog: AlertDialog) {
+        val tombol = dialog.getButton(AlertDialog.BUTTON_POSITIVE)
+        tombol.isEnabled = false
+
+        val profil = userProfileChangeRequest { displayName = namaBaru }
+        user.updateProfile(profil)
+            .addOnSuccessListener {
+                dialog.dismiss()
+                binding.tvHalo.text = getString(R.string.halo_pengguna, namaBaru)
+                binding.tvAkunNama.text = namaBaru
+                Toast.makeText(this, R.string.nama_diperbarui, Toast.LENGTH_SHORT).show()
+            }
+            .addOnFailureListener {
+                tombol.isEnabled = true
+                Toast.makeText(this, R.string.nama_gagal, Toast.LENGTH_LONG).show()
+            }
+    }
     private fun keLogin() {
         val intent = Intent(this, LoginActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
