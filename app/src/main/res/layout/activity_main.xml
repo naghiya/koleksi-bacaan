@@ -397,13 +397,30 @@
                         android:orientation="vertical"
                         android:padding="20dp">
 
-                        <TextView
-                            android:layout_width="wrap_content"
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="@string/section_data_mahasiswa"
-                            android:textColor="@color/kb_primary"
-                            android:textSize="16sp"
-                            android:textStyle="bold" />
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="@string/section_data_mahasiswa"
+                                android:textColor="@color/kb_primary"
+                                android:textSize="16sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/btnUbahData"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:padding="6dp"
+                                android:text="@string/btn_ubah_data"
+                                android:textColor="@color/kb_accent"
+                                android:textStyle="bold" />
+                        </LinearLayout>
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -420,11 +437,11 @@
                                 android:textStyle="bold" />
 
                             <TextView
+                                android:id="@+id/tvNim"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1.4"
                                 android:gravity="end"
-                                android:text="@string/nim_value"
                                 android:textColor="@color/kb_on_surface" />
                         </LinearLayout>
 
@@ -448,11 +465,11 @@
                                 android:textStyle="bold" />
 
                             <TextView
+                                android:id="@+id/tvProdi"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1.4"
                                 android:gravity="end"
-                                android:text="@string/prodi_value"
                                 android:textColor="@color/kb_on_surface" />
                         </LinearLayout>
 

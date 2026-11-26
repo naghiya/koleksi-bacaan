@@ -25,6 +25,7 @@ import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.userProfileChangeRequest
+import android.widget.EditText
 
 class MainActivity : AppCompatActivity() {
 
@@ -70,6 +71,8 @@ class MainActivity : AppCompatActivity() {
         binding.rvBuku.adapter = adapter
 
         muatFotoProfil()
+        muatDataMahasiswa()
+        binding.btnUbahData.setOnClickListener { tampilkanDialogUbahData() }
         binding.cardProfil.setOnClickListener {
             pilihFoto.launch(
                 PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
@@ -294,6 +297,38 @@ class MainActivity : AppCompatActivity() {
                 tombol.isEnabled = true
                 Toast.makeText(this, R.string.nama_gagal, Toast.LENGTH_LONG).show()
             }
+    }
+    // ---------- Data mahasiswa (disimpan lokal per akun) ----------
+
+    private fun kunciNim() = "nim_" + (auth.currentUser?.uid ?: "")
+    private fun kunciProdi() = "prodi_" + (auth.currentUser?.uid ?: "")
+
+    private fun muatDataMahasiswa() {
+        val kosong = getString(R.string.nim_kosong)
+        binding.tvNim.text = prefs.getString(kunciNim(), null)?.takeIf { it.isNotBlank() } ?: kosong
+        binding.tvProdi.text = prefs.getString(kunciProdi(), null)?.takeIf { it.isNotBlank() } ?: kosong
+    }
+
+    private fun tampilkanDialogUbahData() {
+        val tampilan = layoutInflater.inflate(R.layout.dialog_ubah_data, null)
+        val etNim = tampilan.findViewById<EditText>(R.id.etNim)
+        val etProdi = tampilan.findViewById<EditText>(R.id.etProdi)
+        etNim.setText(prefs.getString(kunciNim(), "").orEmpty())
+        etProdi.setText(prefs.getString(kunciProdi(), "").orEmpty())
+
+        MaterialAlertDialogBuilder(this)
+            .setTitle(R.string.dialog_data_judul)
+            .setView(tampilan)
+            .setNegativeButton(R.string.btn_batal, null)
+            .setPositiveButton(R.string.btn_simpan) { _, _ ->
+                prefs.edit()
+                    .putString(kunciNim(), etNim.text.toString().trim())
+                    .putString(kunciProdi(), etProdi.text.toString().trim())
+                    .apply()
+                muatDataMahasiswa()
+                Toast.makeText(this, R.string.data_diperbarui, Toast.LENGTH_SHORT).show()
+            }
+            .show()
     }
     private fun keLogin() {
         val intent = Intent(this, LoginActivity::class.java)

@@ -122,4 +122,10 @@
     <string name="dialog_nama_judul">Ubah nama</string>
     <string name="nama_diperbarui">Nama berhasil diperbarui</string>
     <string name="nama_gagal">Gagal mengubah nama, coba lagi</string>
+    <string name="nim_kosong">Belum diisi</string>
+    <string name="btn_ubah_data">Ubah Data</string>
+    <string name="dialog_data_judul">Ubah data mahasiswa</string>
+    <string name="hint_nim">NIM</string>
+    <string name="hint_prodi">Program studi</string>
+    <string name="data_diperbarui">Data berhasil disimpan</string>
 </resources>
