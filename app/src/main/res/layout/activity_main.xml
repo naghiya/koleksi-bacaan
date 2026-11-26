@@ -527,10 +527,20 @@
         </ScrollView>
     </FrameLayout>
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottomNav"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:backgroundTint="@color/kb_nav"
-        app:menu="@menu/menu_bottom_nav" />
+        android:background="@drawable/bg_nav">
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottomNav"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            app:backgroundTint="@android:color/transparent"
+            app:elevation="0dp"
+            app:itemIconTint="@color/nav_icon_color"
+            app:itemTextColor="@color/nav_text_color"
+            app:menu="@menu/menu_bottom_nav" />
+    </LinearLayout>
 </LinearLayout>
