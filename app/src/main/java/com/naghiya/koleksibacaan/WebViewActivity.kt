@@ -25,6 +25,8 @@ class WebViewActivity : AppCompatActivity() {
         url = rapikanUrl(intent.getStringExtra(EXTRA_URL).orEmpty())
 
         binding.webView.settings.javaScriptEnabled = true
+        binding.webView.settings.domStorageEnabled = true
+        binding.webView.settings.loadWithOverviewMode = true
         binding.webView.webViewClient = object : WebViewClient() {
             override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
                 adaError = false
